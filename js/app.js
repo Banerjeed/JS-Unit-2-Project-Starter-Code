@@ -10,14 +10,6 @@ $(document).ready(function() {
     $('#loading').hide();
 });
 
-// add click event for article
-// show the pop up (remove class 'hidden')
-// make ajax request to page
-// on success,
-// hide loading
-// replace popup contents with web data
-// make the x hide
-// hide popup when X is clicked
 
 //API functions
 'use strict';
@@ -48,7 +40,7 @@ function buildHeadline(title, section, imagePath, impressions) {
 }
 
 var guardianUrl = 'https://content.guardianapis.com/search?api-key='
-var guardianApiKey = 
+var guardianApiKey = '56e51ab3-e876-4bdc-a292-e89f0a7b3688'
 
 $.ajax({
   url: guardianUrl+guardianApiKey,
@@ -67,7 +59,7 @@ $.ajax({
 });
 
 var buzzfeedUrl = 'https://newsapi.org/v1/articles?source=buzzfeed&sortBy=top&apiKey='
-var buzzfeedApiKey = 
+var buzzfeedApiKey = 'd3a65f1106d948c99550ea34b7b15cea'
 
 $.ajax({
   url: buzzfeedUrl+buzzfeedApiKey,
@@ -86,7 +78,7 @@ $.ajax({
 });
 
 var espnUrl = 'https://newsapi.org/v1/articles?source=espn&sortBy=top&apiKey='
-var espnApiKey = 
+var espnApiKey = 'd3a65f1106d948c99550ea34b7b15cea'
 
 $.ajax({
   url: espnUrl+espnApiKey,
@@ -103,4 +95,35 @@ $.ajax({
 	error: function() {
 	}
 });
+
+ // Article Popup Overlay
+  $(document.body).on("click", ".articleContent a h3", function(){
+    var title = $(this).text();
+    $("#popUp").removeClass("hidden loader");
+    $("#popUp h1").text(title);
+    if (description) {
+      $("#popUp p").html(description);
+    } else {
+      $("#popUp p").text("This story is by " + author );
+    }
+    $(".popUpAction").attr("href", url);
+  })
+  // Close popup 
+  $(".closePopUp").on("click",function(){
+    $("#popUp").addClass("hidden");
+  })
+  // Toggle Search
+  $("#search img").on("click", function(){
+  	$("section #search").toggleClass("active");
+  })
+  // Loading window 
+  $("section.container a h1").on("click", function(){
+  	setTimeout(loader, 500);
+  	$("section.container span").text("Source Name");
+  	$("article").show();
+  })
+  // Sort articles by date  
+  $("article").sort(sortDescending);
+  $("input").on("keyup", search);
+
 
